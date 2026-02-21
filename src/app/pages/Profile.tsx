@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
-import avikaImage from '../../../avika.PNG';
+import avikaImage from '../../assets/avika.PNG';
 
 export function Profile() {
   const menuItems = [

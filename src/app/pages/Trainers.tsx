@@ -2,7 +2,7 @@ import { PageLayout } from '../components/PageLayout';
 import { Award, Star, Calendar, Mail } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
-import missyImage from '../../../missy.PNG';
+import missyImage from '../../assets/missy.PNG';
 
 interface Coach {
   id: string;
