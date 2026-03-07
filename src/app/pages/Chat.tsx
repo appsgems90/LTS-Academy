@@ -27,13 +27,9 @@ export function Chat() {
   // ✅ Load registered user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("ltsUser");
-    if (!storedUser) {
-      window.location.href = "/registration"; // redirect if not registered
-      return;
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-    // parsed object should contain parentName & studentName (see registration page)
-    setUser(JSON.parse(storedUser));
-
     // clear unread flag when entering chat
     localStorage.removeItem("unreadChat");
   }, []);

@@ -6,12 +6,19 @@ import { Trainers } from './pages/Trainers';
 import { Profile } from './pages/Profile';
 import { Registration } from './pages/Registration';
 import { DesignSystem } from './pages/DesignSystem';
+import ProtectedLayout from './components/ProtectedLayout';
+
 export const router = createBrowserRouter([
-  { path: '/', Component: Home },
-  { path: '/chat', Component: Chat },
-  { path: '/gallery', Component: Gallery },
-  { path: '/trainers', Component: Trainers },
-  { path: '/profile', Component: Profile },
+  {
+    element: <ProtectedLayout />,
+    children: [
+      { path: '/', Component: Home },
+      { path: '/chat', Component: Chat },
+      { path: '/gallery', Component: Gallery },
+      { path: '/trainers', Component: Trainers },
+      { path: '/profile', Component: Profile },
+      { path: '/design-system', Component: DesignSystem },
+    ],
+  },
   { path: '/registration', Component: Registration },
-  { path: '/design-system', Component: DesignSystem },
 ]);

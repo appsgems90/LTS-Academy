@@ -50,6 +50,7 @@ export function Registration() {
 
     // Save locally for session persistence
     localStorage.setItem("ltsUser", JSON.stringify(payload));
+    localStorage.setItem("registered", "true");
 
     // Redirect to chat
     navigate("/chat");
