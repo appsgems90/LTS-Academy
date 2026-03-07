@@ -13,8 +13,20 @@ import {
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import avikaImage from '../../assets/avika.PNG';
+import { useState, useEffect } from 'react';
 
 export function Profile() {
+  const [user, setUser] = useState<{ parentName: string; studentName?: string; role?: string } | null>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('ltsUser');
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
+
+  const parentName = user?.parentName || 'Parent';
+  const studentName = user?.studentName || '';
+  const isCoach = user?.role === 'coach';
+
   const menuItems = [
     { icon: User, label: 'Edit Profile', color: 'text-[#1C2D8C]', path: '#' },
     { icon: Settings, label: 'App Settings', color: 'text-[#1C2D8C]', path: '#' },
@@ -35,11 +47,22 @@ export function Profile() {
         >
           <div className="flex items-start gap-4">
             <div className="w-20 h-20 bg-white/20 backdrop-blur rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-              <img src={avikaImage} alt="Avika Battala" className="w-full h-full object-cover rounded-full" />
+              <img
+                src={
+                  user?.avatarUrl ||
+                  `https://api.dicebear.com/6.x/identicon/svg?seed=${encodeURIComponent(
+                    parentName
+                  )}`
+                }
+                alt={parentName}
+                className="w-full h-full object-cover rounded-full"
+              />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-semibold mb-1">Avika Battala</h2>
-              <p className="text-white/80 text-sm mb-3">Parent of Emma Martinez</p>
+              <h2 className="text-xl font-semibold mb-1">{parentName}</h2>
+              <p className="text-white/80 text-sm mb-3">
+                {isCoach ? 'Coach / Trainer' : `Parent of ${studentName}`}
+              </p>
               <div className="flex items-center gap-2">
                 <div className="px-3 py-1 bg-white/20 backdrop-blur rounded-full">
                   <span className="text-xs">Beginner Group</span>
@@ -66,7 +89,7 @@ export function Profile() {
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-sm text-muted-foreground">Student Name</span>
-              <span className="text-sm font-medium text-foreground">Emma Martinez</span>
+              <span className="text-sm font-medium text-foreground">{studentName || '—'}</span>
             </div>
             <div className="h-px bg-border" />
             <div className="flex justify-between">

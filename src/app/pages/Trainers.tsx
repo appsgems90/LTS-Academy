@@ -117,13 +117,13 @@ export function Trainers() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="bg-gradient-to-br from-[#1C2D8C]/5 to-[#00C2FF]/5 rounded-[20px] p-6 border border-[#00C2FF]/10"
         >
-          <h4 className="font-semibold text-[#111827] mb-2">Meet Our Team</h4>
-          <p className="text-sm text-[#6B7280] mb-4">
+          <h4 className="font-semibold text-foreground mb-2">Meet Our Team</h4>
+          <p className="text-sm text-muted-foreground mb-4">
             Our certified coaching staff is dedicated to helping every student reach their full
             potential on the ice. With years of experience and a passion for teaching, we create a
             supportive and fun learning environment.
           </p>
-          <button className="text-sm text-[#1C2D8C] font-medium">
+          <button className="text-sm text-primary font-medium">
             Learn More About Our Program →
           </button>
         </motion.div>

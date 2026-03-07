@@ -2,33 +2,58 @@ import { PageLayout } from '../components/PageLayout';
 import { Calendar, MapPin, TrendingUp, Bell, Palette, UserPlus, CreditCard } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
+import { useState, useEffect } from 'react';
+import { db } from '../../../lib/firebase';
+import { ref, onValue } from 'firebase/database';
 
 export function Home() {
+  const [user, setUser] = useState<{ parentName: string; studentName?: string; role?: string } | null>(null);
+  const [hasUnread, setHasUnread] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('ltsUser');
+    if (stored) setUser(JSON.parse(stored));
+    const unread = localStorage.getItem('unreadChat');
+    setHasUnread(unread === '1');
+
+    // listen for chat changes while we're on home and mark unread
+    let first = true;
+    const chatRef = ref(db, 'chatRooms/general');
+    const unsubscribe = onValue(chatRef, (snapshot) => {
+      if (first) {
+        first = false; // skip initial load
+        return;
+      }
+      // a change happened; set indicator and persist
+      setHasUnread(true);
+      localStorage.setItem('unreadChat', '1');
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (user === null) {
+    // wait for guard to redirect or for localStorage read
+    return <div className="p-4">Loading…</div>;
+  }
+
+  const parentName = user.parentName;
+  const studentName = user.studentName || '';
+  const avatarUrl =
+    user.avatarUrl ||
+    `https://api.dicebear.com/6.x/identicon/svg?seed=${encodeURIComponent(parentName)}`;
+
   return (
     <PageLayout title="LTS Academy">
       <div className="p-4 space-y-6">
-        {/* Quick Actions Row */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="flex gap-3"
-        >
-          <Link
-            to="/registration"
-            className="flex-1 flex items-center justify-center gap-2 p-3 bg-gradient-to-r from-[#1C2D8C] to-[#00C2FF] rounded-xl active:scale-95 transition-transform shadow-lg shadow-blue-900/20"
-          >
-            <UserPlus className="w-4 h-4 text-white" />
-            <span className="text-sm font-medium text-white">New Student</span>
-          </Link>
-          <Link
-            to="/design-system"
-            className="flex items-center justify-center gap-2 px-4 p-3 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-200 rounded-xl active:scale-95 transition-transform"
-          >
-            <Palette className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-600">Design</span>
-          </Link>
-        </motion.div>
+        {/* avatar displayed in corner */}
+        <div className="flex justify-end">
+          <img
+            src={avatarUrl}
+            alt="avatar"
+            className="w-10 h-10 rounded-full"
+          />
+        </div>
 
         {/* Welcome Section */}
         <motion.div
@@ -38,7 +63,7 @@ export function Home() {
           className="space-y-2"
         >
           <h2 className="text-2xl font-semibold text-foreground">
-            Welcome back, Avika! 👋
+            Welcome back, {parentName}! 👋
           </h2>
           <p className="text-muted-foreground">
             Let's keep up the great progress
@@ -104,7 +129,12 @@ export function Home() {
         >
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-foreground">Announcements</h3>
-            <Bell className="w-5 h-5 text-muted-foreground" />
+            <div className="relative">
+              <Bell className="w-5 h-5 text-muted-foreground" />
+              {hasUnread && (
+                <span className="absolute top-0 right-0 block w-2 h-2 bg-red-500 rounded-full" />
+              )}
+            </div>
           </div>
 
           <div className="space-y-4">
@@ -161,7 +191,9 @@ export function Home() {
           className="bg-card rounded-[20px] p-5 shadow-sm"
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-foreground">Avika's Progress</h3>
+            <h3 className="font-semibold text-foreground">
+              {studentName ? `${studentName}'s Progress` : "Progress"}
+            </h3>
             <TrendingUp className="w-5 h-5 text-accent" />
           </div>
 
