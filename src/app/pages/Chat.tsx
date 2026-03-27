@@ -139,11 +139,13 @@ export function Chat() {
           <div className="flex items-center gap-2">
             <input
               type="text"
+              inputMode="text"
+              autoComplete="off"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="Type a message..."
-              className="flex-1 h-11 px-4 bg-[#F6F8FC] rounded-full text-sm text-[#111827] placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#00C2FF] transition-shadow"
+              className="flex-1 h-11 px-4 bg-[#F6F8FC] rounded-full text-[16px] text-[#111827] placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#00C2FF] transition-shadow"
             />
             <button
               onClick={handleSend}

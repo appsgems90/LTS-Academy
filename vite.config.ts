@@ -39,4 +39,11 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+
+  server: {
+    https: {
+      key: path.resolve(__dirname, 'certs/key.pem'),
+      cert: path.resolve(__dirname, 'certs/cert.pem'),
+    },
+  },
 })

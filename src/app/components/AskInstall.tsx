@@ -34,7 +34,7 @@ export function AskInstall() {
 
   if (!visible) return null;
   return (
-    <div className="fixed bottom-0 w-full bg-card p-4 flex justify-between items-center z-50">
+    <div className="fixed top-0 w-full bg-card p-4 flex justify-between items-center z-50 border-b border-border">
       <span className="text-sm">Install the LTS app for quick access</span>
       <button
         onClick={install}

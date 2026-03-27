@@ -52,12 +52,12 @@ export function Registration() {
     localStorage.setItem("ltsUser", JSON.stringify(payload));
     localStorage.setItem("registered", "true");
 
-    // Redirect to chat
-    navigate("/chat");
+    // Redirect to home
+    navigate("/");
   };
 
   return (
-    <PageLayout title="Register for LTS Academy">
+    <PageLayout title="Register for LTS Academy" hideBottomNav>
       <div className="p-4 space-y-6">
         {/* optionally show generated avatar for preview */}
         <div className="flex justify-center">
